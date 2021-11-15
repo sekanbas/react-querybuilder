@@ -1,11 +1,12 @@
-import { DefaultCombinatorName, DefaultOperatorName, DefaultRuleGroupTypeIC } from '../..';
-import {
+import type {
+  DefaultCombinatorName,
+  DefaultOperatorName,
   DefaultRuleGroupType,
   DefaultRuleGroupTypeAny,
+  DefaultRuleGroupTypeIC,
   DefaultRuleType,
   ParseSQLOptions
 } from '../../types';
-import sqlParser from './sqlParser';
 import {
   AndOperator,
   ComparisonOperator,
@@ -19,6 +20,9 @@ import {
   SQLLiteralValue,
   SQLOrExpression
 } from './types';
+import sqlParser from './sqlParser.cjs';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const sqlParser: { parse: (sql: string) => ParsedSQL } = require('./sqlParser');
 
 const getParamString = (param: any) => {
   switch (typeof param) {
