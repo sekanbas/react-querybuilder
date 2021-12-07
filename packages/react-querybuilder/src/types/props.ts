@@ -185,9 +185,9 @@ export interface Schema {
   createRule(): RuleType;
   createRuleGroup(): RuleGroupTypeAny;
   getOperators(field: string): NameLabelPair[];
-  getValueEditorType(field: string, operator: string): ValueEditorType;
-  getInputType(field: string, operator: string): string | null;
-  getValues(field: string, operator: string): NameLabelPair[];
+  getValueEditorType(field: string, operator: string, path: number[] | undefined): ValueEditorType;
+  getInputType(field: string, operator: string, path: number[] | undefined): string | null;
+  getValues(field: string, operator: string, path: number[] | undefined): NameLabelPair[];
   isRuleGroup(ruleOrGroup: RuleType | RuleGroupTypeAny): ruleOrGroup is RuleGroupTypeAny;
   onGroupAdd(group: RuleGroupTypeAny, parentPath: number[]): void;
   onGroupRemove(path: number[]): void;
@@ -360,21 +360,21 @@ export type QueryBuilderPropsInternal<RG extends RuleGroupType | RuleGroupTypeIC
      * This is a callback function invoked to get the type of `ValueEditor`
      * for the given field and operator.
      */
-    getValueEditorType?(field: string, operator: string): ValueEditorType;
+    getValueEditorType?(field: string, operator: string, path: number[] | undefined): ValueEditorType;
     /**
      * This is a callback function invoked to get the `type` of `<input />`
      * for the given field and operator (only applicable when
      * `getValueEditorType` returns `"text"` or a falsy value). If no
      * function is provided, `"text"` is used as the default.
      */
-    getInputType?(field: string, operator: string): string | null;
+    getInputType?(field: string, operator: string, path: number[] | undefined): string | null;
     /**
      * This is a callback function invoked to get the list of allowed
      * values for the given field and operator (only applicable when
      * `getValueEditorType` returns `"select"` or `"radio"`). If no
      * function is provided, an empty array is used as the default.
      */
-    getValues?(field: string, operator: string): NameLabelPair[];
+    getValues?(field: string, operator: string, path: number[] | undefined): NameLabelPair[];
     /**
      * Allows and/or configuration between rules
      */

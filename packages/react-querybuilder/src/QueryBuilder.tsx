@@ -140,12 +140,12 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
 
     let value: any = '';
 
-    const values = getValuesMain(rule.field, rule.operator);
+    const values = getValuesMain(rule.field, rule.operator, rule.path);
 
     if (values.length) {
       value = values[0].name;
     } else {
-      const editorType = getValueEditorTypeMain(rule.field, rule.operator);
+      const editorType = getValueEditorTypeMain(rule.field, rule.operator, rule.path);
 
       if (editorType === 'checkbox') {
         value = false;
@@ -158,9 +158,9 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   /**
    * Gets the ValueEditor type for a given field and operator
    */
-  const getValueEditorTypeMain = (field: string, operator: string) => {
+  const getValueEditorTypeMain = (field: string, operator: string, path: number[] | undefined) => {
     if (getValueEditorType) {
-      const vet = getValueEditorType(field, operator);
+      const vet = getValueEditorType(field, operator, path);
       if (vet) return vet;
     }
 
@@ -170,9 +170,9 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   /**
    * Gets the `<input />` type for a given field and operator
    */
-  const getInputTypeMain = (field: string, operator: string) => {
+  const getInputTypeMain = (field: string, operator: string, path: number[] | undefined) => {
     if (getInputType) {
-      const inputType = getInputType(field, operator);
+      const inputType = getInputType(field, operator, path);
       if (inputType) return inputType;
     }
 
@@ -182,14 +182,14 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   /**
    * Gets the list of valid values for a given field and operator
    */
-  const getValuesMain = (field: string, operator: string) => {
+  const getValuesMain = (field: string, operator: string, path: number[] | undefined) => {
     const fieldData = fieldMap[field];
     /* istanbul ignore if */
     if (fieldData?.values) {
       return fieldData.values;
     }
     if (getValues) {
-      const vals = getValues(field, operator);
+      const vals = getValues(field, operator, path);
       if (vals) return vals;
     }
 

@@ -98,10 +98,10 @@ export const Rule = ({
   };
 
   const fieldData = fieldMap?.[field] ?? ({} as Field);
-  const inputType = fieldData.inputType ?? getInputType(field, operator);
+  const inputType = fieldData.inputType ?? getInputType(field, operator, path);
   const operators = fieldData.operators ?? getOperators(field);
-  const valueEditorType = fieldData.valueEditorType ?? getValueEditorType(field, operator);
-  const values = fieldData.values ?? getValues(field, operator);
+  const valueEditorType = fieldData.valueEditorType ?? getValueEditorType(field, operator, path);
+  const values = fieldData.values ?? getValues(field, operator, path);
   const level = path.length;
 
   const validationResult =
