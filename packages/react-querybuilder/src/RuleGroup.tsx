@@ -284,6 +284,7 @@ export const RuleGroup = ({
                   path={thisPath}
                   translations={translations}
                   context={context}
+                  rule={r}
                 />
               )}
             </Fragment>
