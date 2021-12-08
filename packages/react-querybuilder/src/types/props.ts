@@ -29,6 +29,10 @@ export interface CommonProps {
    * Validation result of the parent component
    */
   validation?: boolean | ValidationResult;
+  /**
+   * Rule object
+   */
+  rule?: RuleType;
 }
 
 export interface ActionProps extends CommonProps {
@@ -277,6 +281,7 @@ export interface RuleProps {
   translations: Translations;
   schema: Schema;
   context?: any;
+  rule: RuleType,
 }
 
 export type QueryBuilderProps<RG extends RuleGroupType | RuleGroupTypeIC = RuleGroupType> = Omit<
@@ -393,6 +398,10 @@ export type QueryBuilderPropsInternal<RG extends RuleGroupType | RuleGroupTypeIC
      * This is a callback function that is invoked anytime the query configuration changes.
      */
     onQueryChange?(query: RG): void;
+    /**
+     * This is a callback function that is invoked removed rule or group.
+     */
+     onRemoveRoleOrGroup?(path: number[], query: RG): boolean | undefined;
     /**
      * This can be used to assign specific CSS classes to various controls
      * that are created by the `<QueryBuilder />`.

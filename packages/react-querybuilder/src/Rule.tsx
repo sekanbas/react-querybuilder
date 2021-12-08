@@ -12,7 +12,8 @@ export const Rule = ({
   value,
   translations,
   schema,
-  context
+  context,
+  rule,
 }: RuleProps) => {
   const {
     classNames,
@@ -163,6 +164,7 @@ export const Rule = ({
             level={level}
             context={context}
             validation={validationResult}
+            rule={rule}
           />
           <controls.valueEditor
             field={field}
@@ -178,6 +180,7 @@ export const Rule = ({
             level={level}
             context={context}
             validation={validationResult}
+            rule={rule}
           />
         </>
       )}

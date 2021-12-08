@@ -71,6 +71,7 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   onAddRule = (r) => r,
   onAddGroup = (rg) => rg,
   onQueryChange = () => {},
+  onRemoveRoleOrGroup,
   controlClassnames,
   showCombinatorsBetweenRules = false,
   showNotToggle = false,
@@ -339,6 +340,10 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   };
 
   const onRuleOrGroupRemove = (path: number[]) => {
+    if (typeof onRemoveRoleOrGroup === 'function') {
+      const isValidOperation = onRemoveRoleOrGroup(path, root);
+      if (isValidOperation === false) return;
+    }
     const parentPath = getParentPath(path);
     const index = path[path.length - 1];
     const newQuery = produce(root, (draft) => {
