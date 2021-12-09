@@ -318,11 +318,13 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
         if (resetOnFieldChange && prop === 'field') {
           ruleOrGroup.operator = getRuleDefaultOperator(value);
           ruleOrGroup.value = getRuleDefaultValue({ ...ruleOrGroup, field: value });
+          if (typeof resetOnFieldChange === 'function') resetOnFieldChange(ruleOrGroup);
         }
 
         // Set default value for operator change
         if (resetOnOperatorChange && prop === 'operator') {
           ruleOrGroup.value = getRuleDefaultValue({ ...ruleOrGroup, operator: value });
+          if (typeof resetOnOperatorChange === 'function') resetOnOperatorChange(ruleOrGroup);
         }
       }
     });

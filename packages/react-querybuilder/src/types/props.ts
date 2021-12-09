@@ -427,11 +427,11 @@ export type QueryBuilderPropsInternal<RG extends RuleGroupType | RuleGroupTypeIC
     /**
      * Reset the operator and value components when the `field` changes.
      */
-    resetOnFieldChange?: boolean;
+    resetOnFieldChange?: boolean | ((rule: RuleType) => any);
     /**
      * Reset the value component when the `operator` changes.
      */
-    resetOnOperatorChange?: boolean;
+    resetOnOperatorChange?: boolean | ((rule: RuleType) => any);
     /**
      * Select the first field in the array automatically
      */
