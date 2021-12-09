@@ -1,6 +1,7 @@
 import produce, { enableES5 } from 'immer';
 import { useEffect, useMemo, useState } from 'react';
-import DndWrapper from './DndWrapper';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import {
   defaultCombinators,
   defaultControlClassnames,
@@ -500,7 +501,7 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
   );
 
   return (
-    <DndWrapper enable={enableDragAndDrop}>
+    <DndProvider backend={HTML5Backend}>
       <div
         className={className}
         data-dnd={enableDragAndDrop ? 'enabled' : 'disabled'}
@@ -518,7 +519,7 @@ const QueryBuilderImpl = <RG extends RuleGroupType | RuleGroupTypeIC = RuleGroup
           context={context}
         />
       </div>
-    </DndWrapper>
+    </DndProvider>
   );
 };
 
