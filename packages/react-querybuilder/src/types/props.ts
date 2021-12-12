@@ -8,11 +8,15 @@ import type {
 } from './ruleGroups';
 import type { QueryValidator, ValidationMap, ValidationResult } from './validation';
 
-export interface CommonProps {
+export interface CommonSubComponentProps {
   /**
    * CSS classNames to be applied
    */
   className?: string;
+  /**
+   * Path to this sub-component's Rule or RuleGroup
+   */
+  path: number[];
   /**
    * The level of the current group
    */
@@ -35,7 +39,7 @@ export interface CommonProps {
   rule?: RuleType;
 }
 
-export interface ActionProps extends CommonProps {
+export interface ActionProps extends CommonSubComponentProps {
   label?: string;
   handleOnClick(e: React.MouseEvent): void;
 }
@@ -47,7 +51,7 @@ export interface ActionWithRulesProps extends ActionProps {
   rules?: RuleOrGroupArray;
 }
 
-export interface SelectorEditorProps extends CommonProps {
+export interface SelectorEditorProps extends CommonSubComponentProps {
   value?: string;
   handleOnChange(value: any): void;
 }
@@ -56,7 +60,7 @@ export interface ValueSelectorProps extends SelectorEditorProps {
   options: NameLabelPair[];
 }
 
-export interface NotToggleProps extends CommonProps {
+export interface NotToggleProps extends CommonSubComponentProps {
   checked?: boolean;
   handleOnChange(checked: boolean): void;
   label?: string;
@@ -86,7 +90,7 @@ export interface ValueEditorProps extends SelectorEditorProps {
   value?: any;
 }
 
-export interface DragHandleProps extends CommonProps {
+export interface DragHandleProps extends CommonSubComponentProps {
   label?: string;
 }
 
