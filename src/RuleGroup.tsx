@@ -199,6 +199,7 @@ export const RuleGroup = ({
                 parentId={id}
                 translations={translations}
                 context={context}
+                rule={r}
               />
             )}
           </Fragment>

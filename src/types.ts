@@ -73,6 +73,10 @@ export interface CommonProps {
    * Validation result of the parent component
    */
   validation?: boolean | ValidationResult;
+   /**
+   * Rule object
+   */
+    rule?: RuleType;
 }
 
 export interface ActionProps extends CommonProps {
@@ -219,9 +223,9 @@ export interface Schema {
   createRuleGroup(): RuleGroupType;
   getLevel(id: string): number;
   getOperators(field: string): NameLabelPair[];
-  getValueEditorType(field: string, operator: string): ValueEditorType;
-  getInputType(field: string, operator: string): string | null;
-  getValues(field: string, operator: string): NameLabelPair[];
+  getValueEditorType(field: string, operator: string, rule: RuleType): ValueEditorType;
+  getInputType(field: string, operator: string, rule: RuleType): string | null;
+  getValues(field: string, operator: string, rule: RuleType): NameLabelPair[];
   isRuleGroup(ruleOrGroup: RuleType | RuleGroupType): ruleOrGroup is RuleGroupType;
   onGroupAdd(group: RuleGroupType, parentId: string): void;
   onGroupRemove(groupId: string, parentId: string): void;
@@ -315,6 +319,7 @@ export interface RuleProps {
   translations: Translations;
   schema: Schema;
   context?: any;
+  rule: RuleType;
 }
 
 export interface QueryBuilderProps {
@@ -383,21 +388,21 @@ export interface QueryBuilderProps {
    * This is a callback function invoked to get the type of `ValueEditor`
    * for the given field and operator.
    */
-  getValueEditorType?(field: string, operator: string): ValueEditorType;
+  getValueEditorType?(field: string, operator: string, rule: RuleType): ValueEditorType;
   /**
    * This is a callback function invoked to get the `type` of `<input />`
    * for the given field and operator (only applicable when
    * `getValueEditorType` returns `"text"` or a falsy value). If no
    * function is provided, `"text"` is used as the default.
    */
-  getInputType?(field: string, operator: string): string | null;
+  getInputType?(field: string, operator: string, rule: RuleType): string | null;
   /**
    * This is a callback function invoked to get the list of allowed
    * values for the given field and operator (only applicable when
    * `getValueEditorType` returns `"select"` or `"radio"`). If no
    * function is provided, an empty array is used as the default.
    */
-  getValues?(field: string, operator: string): NameLabelPair[];
+  getValues?(field: string, operator: string, rule: RuleType): NameLabelPair[];
   /**
    * This callback is invoked before a new rule is added. The function should either manipulate
    * the rule and return it, or return `false` to cancel the addition of the rule.
@@ -416,6 +421,10 @@ export interface QueryBuilderProps {
    * This is a notification that is invoked anytime the query configuration changes.
    */
   onQueryChange(query: RuleGroupType): void;
+  /**
+     * This is a callback function that is invoked removed rule or group.
+     */
+   onRemoveRoleOrGroup?(rule: RuleType | RuleGroupType, query: RuleGroupType, type: 'rule' | 'rulegroup'): boolean | undefined;
   /**
    * This can be used to assign specific CSS classes to various controls
    * that are created by the `<QueryBuilder />`.
@@ -441,11 +450,11 @@ export interface QueryBuilderProps {
   /**
    * Reset the operator and value components when the `field` changes.
    */
-  resetOnFieldChange?: boolean;
+   resetOnFieldChange?: boolean | ((rule: RuleType | RuleGroupType) => any);
   /**
    * Reset the value component when the `operator` changes.
    */
-  resetOnOperatorChange?: boolean;
+   resetOnOperatorChange?: boolean | ((rule: RuleType | RuleGroupType) => any);
   /**
    * Select the first field in the array automatically
    */

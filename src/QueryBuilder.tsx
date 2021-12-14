@@ -32,6 +32,7 @@ export const QueryBuilder = ({
   onAddRule,
   onAddGroup,
   onQueryChange,
+  onRemoveRoleOrGroup,
   controlClassnames,
   showCombinatorsBetweenRules = false,
   showNotToggle = false,
@@ -97,9 +98,9 @@ export const QueryBuilder = ({
   /**
    * Gets the ValueEditor type for a given field and operator
    */
-  const getValueEditorTypeMain = (field: string, operator: string) => {
+  const getValueEditorTypeMain = (field: string, operator: string, rule: RuleType) => {
     if (getValueEditorType) {
-      const vet = getValueEditorType(field, operator);
+      const vet = getValueEditorType(field, operator, rule);
       if (vet) return vet;
     }
 
@@ -109,9 +110,9 @@ export const QueryBuilder = ({
   /**
    * Gets the `<input />` type for a given field and operator
    */
-  const getInputTypeMain = (field: string, operator: string) => {
+  const getInputTypeMain = (field: string, operator: string, rule: RuleType) => {
     if (getInputType) {
-      const inputType = getInputType(field, operator);
+      const inputType = getInputType(field, operator, rule);
       if (inputType) return inputType;
     }
 
@@ -121,14 +122,14 @@ export const QueryBuilder = ({
   /**
    * Gets the list of valid values for a given field and operator
    */
-  const getValuesMain = (field: string, operator: string) => {
+  const getValuesMain = (field: string, operator: string, rule: RuleType) => {
     const fieldData = fieldMap[field];
     /* istanbul ignore if */
     if (fieldData?.values) {
       return fieldData.values;
     }
     if (getValues) {
-      const vals = getValues(field, operator);
+      const vals = getValues(field, operator, rule);
       if (vals) return vals;
     }
 
@@ -180,12 +181,12 @@ export const QueryBuilder = ({
 
     let value: any = '';
 
-    const values = getValuesMain(rule.field, rule.operator);
+    const values = getValuesMain(rule.field, rule.operator, rule);
 
     if (values.length) {
       value = values[0].name;
     } else {
-      const editorType = getValueEditorTypeMain(rule.field, rule.operator);
+      const editorType = getValueEditorTypeMain(rule.field, rule.operator, rule);
 
       if (editorType === 'checkbox') {
         value = false;
@@ -248,10 +249,12 @@ export const QueryBuilder = ({
           const operator = getRuleDefaultOperator(rule.field);
           rule.operator = operator;
           rule.value = getRuleDefaultValue(rule);
+          if (typeof resetOnFieldChange === 'function') resetOnFieldChange(rule);
         }
 
         if (resetOnOperatorChange && prop === 'operator') {
           rule.value = getRuleDefaultValue(rule);
+          if (typeof resetOnOperatorChange === 'function') resetOnOperatorChange(rule);
         }
       }
 
@@ -270,6 +273,10 @@ export const QueryBuilder = ({
     if (parent) {
       const index = findIndex(parent.rules, { id });
 
+      if (typeof onRemoveRoleOrGroup === 'function') {
+        const isValidOperation = onRemoveRoleOrGroup(parent.rules[index], rootCopy, 'rule');
+        if (isValidOperation === false) return;
+      }
       parent.rules.splice(index, 1);
 
       setRoot(rootCopy);
@@ -287,6 +294,10 @@ export const QueryBuilder = ({
     if (parent) {
       const index = findIndex(parent.rules, { id });
 
+      if (typeof onRemoveRoleOrGroup === 'function') {
+        const isValidOperation = onRemoveRoleOrGroup(parent.rules[index], rootCopy, 'rulegroup');
+        if (isValidOperation === false) return;
+      }
       parent.rules.splice(index, 1);
 
       setRoot(rootCopy);

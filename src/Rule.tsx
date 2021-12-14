@@ -29,7 +29,8 @@ export const Rule = ({
     showCloneButtons,
     validationMap
   },
-  context
+  context,
+  rule
 }: RuleProps) => {
   const generateOnChangeHandler = (prop: Exclude<keyof RuleType, 'id'>) => (value: any) => {
     onPropChange(prop, value, id);
@@ -56,10 +57,10 @@ export const Rule = ({
   };
 
   const fieldData = fieldMap?.[field] ?? ({} as Field);
-  const inputType = fieldData.inputType ?? getInputType(field, operator);
+  const inputType = fieldData.inputType ?? getInputType(field, operator, rule);
   const operators = fieldData.operators ?? getOperators(field);
-  const valueEditorType = fieldData.valueEditorType ?? getValueEditorType(field, operator);
-  const values = fieldData.values ?? getValues(field, operator);
+  const valueEditorType = fieldData.valueEditorType ?? getValueEditorType(field, operator, rule);
+  const values = fieldData.values ?? getValues(field, operator, rule);
   const level = getLevel(id);
 
   const validationResult =
@@ -82,6 +83,7 @@ export const Rule = ({
         level={level}
         context={context}
         validation={validationResult}
+        rule={rule}
       />
       {(autoSelectField || fieldData.name !== '~') && (
         <>
@@ -96,6 +98,7 @@ export const Rule = ({
             level={level}
             context={context}
             validation={validationResult}
+            rule={rule}
           />
           <controls.valueEditor
             field={field}
@@ -111,6 +114,7 @@ export const Rule = ({
             level={level}
             context={context}
             validation={validationResult}
+            rule={rule}
           />
         </>
       )}
